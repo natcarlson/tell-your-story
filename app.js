@@ -12,6 +12,9 @@ app.use(express.static(__dirname + '/public'));
 
 app.set('view engine', 'ejs');
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
 var mongoPath = 'mongodb://localhost/tellyourstory';
 var mongoose = require('mongoose');
 mongoose.connect(mongoPath);

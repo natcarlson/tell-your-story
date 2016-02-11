@@ -49,18 +49,15 @@ function logInUser(usernameAttempt, passwordAttempt, callback) {
 function setLogInUserFormHandler() {
   debugger
     $('#login-button').on('click', function(e) {
-
         e.preventDefault();
 
         var $formDiv = $('.login-body')
 
         var usernameField = $formDiv.find('input[name="username"]');
-
         var usernameText = usernameField.val();
         usernameField.val('');
 
         var passwordField = $formDiv.find('input[name="password"]');
-
         var passwordText = passwordField.val();
         passwordField.val('');
 
@@ -81,11 +78,15 @@ function setLogInUserFormHandler() {
 
 //----------  LOG OUT USER FUNCTION  ----------//
 
-// function logOut() {
-//     $('#logout').on('click', function () {
-//         $.removeCookie('token');
-//     });
-// }
+function setLogOutHandler(){
+  $('#log-out').on('click', function(e){
+    e.preventDefault();
+    $.removeCookie('token');
+    window.location="/";
+
+    // updateStoriesAndViews();
+  });
+}
 
 
 
@@ -96,22 +97,33 @@ function saveNewStory(storyData, callback) {
     // callback = callback || function(){};
     $.ajax( {
         method: 'post',
-        url: '/api/users/stories',
+        url: '/api/users',
         data: storyData,
         success: function(data) {
           var story = data.story;
           callback(story);
+          console.log(story);
 
         }
     });
 }
 
-function setSaveNewStoryFormHandler() {
+function setNewStoryFormHandler() {
     $('form#new-story-form').on('submit', function(e) {
         e.preventDefault();
 
-        var formObj = $(this).serializeObject();
-        console.log(formObj);
+          var formObj = $(this).serializeObject();
+          // var formTitle = $(this).find('input[name="title"]').val();
+          // var formDate = $(this).find('input[name="date"]').val();
+          // var formStory = $(this).find('input[name="story"]').val();
+          // var formPublic = $(this).find('input[name="public"]').val();
+          //
+          // var storyData = {formTitle, formDate, formStory, formPublic};
+
+          // saveNewStory(storyData, function(story) {
+          //   updateStoriesAndViews();
+          // })
+          console.log(formObj);
 
         $('#new-story-modal').closeModal();
         saveNewStory(formObj, function(story) {
@@ -151,9 +163,8 @@ function setSaveNewStoryFormHandler() {
 $(function() {
   setCreateUserFormHandler();
   setLogInUserFormHandler();
-  setSaveNewStoryFormHandler();
+  setNewStoryFormHandler();
+  setLogOutHandler();
   $('.modal-trigger').leanModal();
-  logOut();
-
-  debugger
-});
+})
+;
