@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Stories</title>
+    <% include ./partials/head %>
+  </head>
+  <body>
+
+    <div class="header">
+      <% include ./partials/headers/header_stories.ejs %>
+    </div>
+
+    <h3>All Stories</h3>
+
+    <a href="/">Index</a>
+    <a href="/profile">User Profile</a>
+    <a class="modal-trigger" href="#new-story-modal">Write a new story</a>
+
+    <% include ./partials/newstory %>
+
+
+  </body>
+</html>
