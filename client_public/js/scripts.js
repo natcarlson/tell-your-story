@@ -97,7 +97,7 @@ function saveNewStory(storyData, callback) {
     // callback = callback || function(){};
     $.ajax( {
         method: 'post',
-        url: '/api/users',
+        url: '/api/users/stories',
         data: storyData,
         success: function(data) {
           var story = data.story;

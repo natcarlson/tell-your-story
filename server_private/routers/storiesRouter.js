@@ -1,11 +1,15 @@
+// ----------------------
+// ****** Modules! ******
+// ----------------------
 var express = require('express');
 var router = express.Router();
 
 
-router.get('/', function(req, res) {
-  res.render('profile');
-});
 
+
+// --------------------
+// ****** Route! ******
+// --------------------
 router.post('/', function(req, res) {
   var storyData = req.body.story;
   console.log('Story Data', storyData);
@@ -15,4 +19,10 @@ router.post('/', function(req, res) {
   });
 });
 
+
+
+
+// ----------------------
+// ****** Exports! ******
+// ----------------------
 module.exports = router;

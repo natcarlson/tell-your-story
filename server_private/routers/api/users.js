@@ -1,10 +1,29 @@
+// ----------------------
+// ****** Modules! ******
+// ----------------------
 var express = require('express');
 var router = express.Router();
 var User = require('../../models/user');
 // var request = require('request');
 
 
+
+
+// --------------------
+// ****** Route! ******
+// --------------------
+
 //----- USER API ROUTES -----//
+
+router.use(function(req, res, next){
+  if(!req.user){
+    console.log('No User');
+    res.json({status: 302})
+  } else {
+    console.log('User');
+    next();
+  }
+});
 
 router.get('/', function(req, res) {
     User.findById(req.user._id, function(err, dbUser) {
@@ -63,7 +82,7 @@ router.get('/stories', function(req, res) {
     });
 });
 
-router.post('/stories', function(req, res) {
+router.post('users/', function(req, res) {
     User.findById(req.user._id, function(err, dbUser) {
         console.log(req.body);
         dbUser.stories.favorites.push(req.body);
@@ -86,4 +105,8 @@ router.post('/stories', function(req, res) {
 
 
 
+
+// ----------------------
+// ****** Exports! ******
+// ----------------------
 module.exports = router;
