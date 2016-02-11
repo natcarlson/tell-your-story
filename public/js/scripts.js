@@ -48,14 +48,19 @@ function logInUser(usernameAttempt, passwordAttempt, callback) {
 
 function setLogInUserFormHandler() {
   debugger
-    $('.user-login-form').on('submit', function(e) {
+    $('#login-button').on('click', function(e) {
+
         e.preventDefault();
 
-        var usernameField = $(this).find('input[name="username"]');
+        var $formDiv = $('.login-body')
+
+        var usernameField = $formDiv.find('input[name="username"]');
+
         var usernameText = usernameField.val();
         usernameField.val('');
 
-        var passwordField = $(this).find('input[name="password"]');
+        var passwordField = $formDiv.find('input[name="password"]');
+
         var passwordText = passwordField.val();
         passwordField.val('');
 
@@ -147,6 +152,8 @@ $(function() {
   setCreateUserFormHandler();
   setLogInUserFormHandler();
   setSaveNewStoryFormHandler();
-  logOut();
   $('.modal-trigger').leanModal();
+  logOut();
+
+  debugger
 });
