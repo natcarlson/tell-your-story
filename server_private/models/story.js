@@ -9,5 +9,5 @@ var StorySchema = mongoose.Schema( {
   public: {type: String}
 });
 
-
-module.exports = StorySchema;
+module.exports = mongoose.model('Story', StorySchema);
+// module.exports = StorySchema;

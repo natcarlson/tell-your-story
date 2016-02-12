@@ -35,7 +35,7 @@ function setCreateUserFormHandler() {
 //----------  LOG IN USER FUNCTIONS  ----------//
 
 function logInUser(usernameAttempt, passwordAttempt, callback) {
-  debugger
+    console.log(usernameAttempt, passwordAttempt);
     $.ajax( {
         method: 'post',
         url: '/api/users/authenticate/'+usernameAttempt +'/' + passwordAttempt,
@@ -47,7 +47,7 @@ function logInUser(usernameAttempt, passwordAttempt, callback) {
 }
 
 function setLogInUserFormHandler() {
-  debugger
+
     $('#login-button').on('click', function(e) {
         e.preventDefault();
 
@@ -62,11 +62,12 @@ function setLogInUserFormHandler() {
         passwordField.val('');
 
         var userData = {username: usernameText, password: passwordText};
-        debugger
+
         logInUser(usernameText, passwordText, function(data) {
 
             $.cookie('token', data.token);
-            console.log('Token:', $.cookie('token'));
+            $.cookie('userId', data._id)
+            console.log('Token:', $.cookie('token'), data);
             window.location="/stories"
 
         })
@@ -97,7 +98,7 @@ function saveNewStory(storyData, callback) {
     // callback = callback || function(){};
     $.ajax( {
         method: 'post',
-        url: '/api/users/stories',
+        url: '/stories/api/users/'+ $.cookie('userId'),
         data: storyData,
         success: function(data) {
           var story = data.story;
@@ -112,10 +113,35 @@ function setNewStoryFormHandler() {
     $('form#new-story-form').on('submit', function(e) {
         e.preventDefault();
 
-          var formObj = $(this).serializeObject();
-          // var formTitle = $(this).find('input[name="title"]').val();
-          // var formDate = $(this).find('input[name="date"]').val();
-          // var formStory = $(this).find('input[name="story"]').val();
+        var formTitle = $(this).find('input[name="title"]').val();
+        var formDate = $(this).find('input[name="date"]').val();
+        var formStory = $(this).find('input[name="story"]').val();
+        var formPublic = $(this).find('input[name="public"]').val();
+
+        var storyData = {title:formTitle, date:formDate, story:formStory, public:formPublic};
+
+        saveNewStory(storyData, function(story) {
+          updateStoriesAndViews();
+        })
+
+        console.log(storyData);
+
+      $('#new-story-modal').closeModal();
+      saveNewStory(storyData, function(story) {
+          console.log(story, "is saved");
+      });
+
+          // var formObj = {
+          //   'key': $(this).serializeObject(),
+            // 'userid': ??
+
+
+          //}
+          // $(this).serializeObject();
+
+          // var formTitle =
+          // var formDate = ;
+          // var formStory =
           // var formPublic = $(this).find('input[name="public"]').val();
           //
           // var storyData = {formTitle, formDate, formStory, formPublic};
@@ -123,12 +149,7 @@ function setNewStoryFormHandler() {
           // saveNewStory(storyData, function(story) {
           //   updateStoriesAndViews();
           // })
-          console.log(formObj);
 
-        $('#new-story-modal').closeModal();
-        saveNewStory(formObj, function(story) {
-            console.log(story, "is saved");
-        });
 
         // var formTitle = $(this).find('input[name="title"]').val();
         // var formDate = $(this).find('input[name="date"]').val();

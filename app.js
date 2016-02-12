@@ -14,8 +14,14 @@ app.set('views', (__dirname + '/server_private/views'));
 
 app.set('view engine', 'ejs');
 
+var cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
+
+var loadUser = require('./server_private/middleware/loadUser');
+app.use(loadUser);
 
 var mongoPath = 'mongodb://localhost/tellyourstory';
 var mongoose = require('mongoose');
@@ -29,16 +35,16 @@ mongoose.connect(mongoPath);
 //*****************//
 
 //------Views------//
-var index = require('./server_private/routers/index');
+var index = require('./server_private/routers/pages/index');
 app.use('/', index);
 
-var stories = require('./server_private/routers/stories');
+var stories = require('./server_private/routers/pages/stories');
 app.use('/stories', stories);
 
-var profile = require('./server_private/routers/profile');
+var profile = require('./server_private/routers/pages/profile');
 app.use('/profile', profile);
 
-var about = require('./server_private/routers/about');
+var about = require('./server_private/routers/pages/about');
 app.use('/about', about);
 
 // app.get('/', function(req, res) {

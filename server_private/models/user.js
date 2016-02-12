@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 var bcryptjs = require('bcryptjs');
 var crypto = require('crypto');
-var storySchema = require('./story');
-
+var StorySchema = require('./story.js');
 
 var UserSchema = mongoose.Schema( {
   firstname: {type: String, required: true},
@@ -10,10 +9,9 @@ var UserSchema = mongoose.Schema( {
   email: {type: String, required: true},
   username: {type: String, required: true},
   password: {type: String, required: true},
-  stories: {stories: [storySchema] }
+  stories: [StorySchema],
+  token: {type: String}
 });
-
-
 
 UserSchema.pre('save', function(next) {
     if(this.isModified('password')) {

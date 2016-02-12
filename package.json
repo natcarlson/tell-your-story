@@ -12,11 +12,13 @@
     "bcrypt": "^0.8.5",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
     "crypto": "0.0.3",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "kerberos": "0.0.18",
     "mongoose": "^4.4.0",
+    "mongoose-seed": "^0.1.5",
     "morgan": "^1.6.1",
     "serialize": "^0.1.3"
   }

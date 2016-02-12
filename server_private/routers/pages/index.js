@@ -11,18 +11,10 @@ var router = express.Router();
 // ****** Route! ******
 // --------------------
 router.get('/', function(req, res) {
-  res.render('profile');
+  res.render('index', { loggedUser: req.user });
 });
 
 
-router.post('/', function(req, res) {
-  var storyData = req.body.story;
-  console.log('Story Data', storyData);
-  var newStory = new Story(storyData);
-  newStory.save(function(err, databaseStory) {
-    res.json( databaseStory );
-  });
-});
 
 
 

@@ -13,27 +13,26 @@ var User = require('../../models/user');
 // ****** Route! ******
 // --------------------
 
-//----- USER API ROUTES -----//
 
-router.use(function(req, res, next){
-  if(!req.user){
-    console.log('No User');
-    res.json({status: 302})
-  } else {
-    console.log('User');
-    next();
-  }
-});
+router.post('/authenticate/:username/:password', function(req, res) {
+    console.log('checking for authentication');
+    // console.log(req.params.username, req.params.password);
+    // debugger
+    User.findOne({username: req.params.username}, function(err, dbUser) {
+      console.log(err, dbUser, 'ERROR ^');
+        if (dbUser) {
 
-router.get('/', function(req, res) {
-    User.findById(req.user._id, function(err, dbUser) {
-        res.json(dbUser);
-    });
-});
-
-router.get('/all', function(req, res) {
-    User.find({}, function(err, dbUser) {
-        res.json(dbUser);
+          console.log(dbUser);
+            dbUser.authenticate(req.params.password, function(err, isMatch) {
+                if (isMatch) {
+                    dbUser.setToken(err, function() {
+                        res.json({description: 'Success', token: dbUser.token, '_id': dbUser._id});
+                    });
+                }
+            });
+        } else {
+          res.json({description: 'No Success', status: 302});
+        }
     });
 });
 
@@ -46,62 +45,37 @@ router.post('/', function(req, res) {
     });
 });
 
-router.patch('/edit', function(req, res) {
-    User.findById(req.user._id, function(err, dbUser) {
-        dbUser.name = req.body.name;
-        dbUser.save();
-    });
+
+//----- USER API ROUTES -----//
+
+router.use(function(req, res, next){
+  if(!req.user){
+    console.log('No User');
+    res.json({status: 302})
+  } else {
+    console.log('User');
+    next();
+  }
 });
 
-
-router.post('/authenticate/:username/:password', function(req, res) {
-    console.log('checking for authentication');
-    debugger
-    User.findOne({username: req.params.username}, function(err, dbUser) {
-        if (dbUser) {
-            dbUser.authenticate(req.params.password, function(err, isMatch) {
-                if (isMatch) {
-                    dbUser.setToken(err, function() {
-                        res.json({description: 'Success', token: dbUser.token});
-                    });
-                }
-            });
-        } else {
-          res.json({description: 'No Success', status: 302});
-        }
-    });
-});
-
-
-
-//----- STORIES API ROUTES -----//
-
-router.get('/stories', function(req, res) {
-    User.findById(req.user._id, function(err, dbUser) {
+router.get('/:id', function(req, res) {
+    User.findById(req.params.id, function(err, dbUser) {
         res.json(dbUser);
     });
 });
 
-router.post('users/', function(req, res) {
-    User.findById(req.user._id, function(err, dbUser) {
-        console.log(req.body);
-        dbUser.stories.favorites.push(req.body);
-        dbUser.save(function(err, user) {
-            res.json(user);
-            console.log('.....story is saved.....');
-        });
+router.get('/all', function(req, res) {
+    User.find({}, function(err, dbUser) {
+        res.json(dbUser);
     });
 });
 
-// router.patch('/stories/', function(req, res) {
-//     console.log('.....deleting.....');
-//     User.findById(req.user._id, function(err, dbUser) {
-//         function deleteStory(value, param) {
-//             console.log("Value:", value, "Param:", param);
-//             return value.
-//         }
-//     })
-// })
+router.patch('/:id', function(req, res) {
+    User.findById(req.params.id, function(err, dbUser) {
+        dbUser.name = req.body.name;
+        dbUser.save();
+    });
+});
 
 
 

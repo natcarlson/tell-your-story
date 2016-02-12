@@ -15,10 +15,13 @@
     <a href="/stories">Stories</a>
     <a href="/profile">User Profile</a>
 
-    <% include ./partials/forms/login %>
 
-    <% include ./partials/forms/signup %>
+      <% include ./partials/forms/login %>
 
+      <% include ./partials/forms/signup %>
+
+    <% if (loggedUser) { %>  
+    <% } %>
 
   </body>
 </html>
